@@ -1,5 +1,5 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js';
-import { getDatabase, ref, set, onValue, remove } from 'https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js';
+import { getDatabase, ref, set, onValue } from 'https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js';
 
 const firebaseConfig = {
   apiKey: "AIzaSyC3mcSomg_cL8klJ61ZoDyh3XqHjaX6Nqc",
@@ -17,9 +17,14 @@ const db = getDatabase(app);
 let currentDate = new Date();
 let currentUser;
 
+console.log("✅ calendar.js 載入成功");
+
 document.addEventListener('DOMContentLoaded', () => {
+  console.log("📅 DOMContentLoaded OK");
+
   currentUser = sessionStorage.getItem('user');
   if (!currentUser) {
+    console.warn("⚠️ 尚未登入，導向 login.html");
     window.location.href = 'login.html';
     return;
   }
@@ -27,250 +32,225 @@ document.addEventListener('DOMContentLoaded', () => {
   renderCalendar();
   loadCalendarData();
 
+  // 月份切換
   document.getElementById('prev-month').addEventListener('click', () => {
     currentDate.setMonth(currentDate.getMonth() - 1);
     renderCalendar();
     loadCalendarData();
+    hideModal();
   });
-
   document.getElementById('next-month').addEventListener('click', () => {
     currentDate.setMonth(currentDate.getMonth() + 1);
     renderCalendar();
     loadCalendarData();
+    hideModal();
   });
 
-  document.getElementById('logout-btn').addEventListener('click', () => {
-    sessionStorage.clear();
-    window.location.href = 'login.html';
+  // 點擊日期格子開啟 modal
+  document.getElementById('calendar-body').addEventListener('click', e => {
+    const td = e.target.closest('td');
+    if (!td || !td.dataset.date) return;
+    openModal(td.dataset.date);
   });
 
-  document.getElementById('calendar-body').addEventListener('click', (e) => {
-    const date = e.target.closest('td')?.dataset.date;
-    if (date) {
-      document.getElementById('modal').classList.remove('hidden');
-      document.getElementById('modal-date').textContent = date;
-      loadEventsAndComments(date);
-    }
-  });
-
+  // 新增活動
   document.getElementById('add-event').addEventListener('click', () => {
     const date = document.getElementById('modal-date').textContent;
-    const eventInput = document.getElementById('event-input').value;
-    if (eventInput) {
-      const dateRef = ref(db, `calendar/${date}`);
-      onValue(dateRef, (snapshot) => {
-        const data = snapshot.val() || {};
-        const events = data.events || [];
-        events.push(eventInput);
-        set(dateRef, {
-          ...data,
-          events,
-          hasComments: data.hasComments || false,
-          [`hasNewFor${currentUser === 'P' ? 'L' : 'P'}`]: true
-        });
-        set(ref(db, `notices/${Date.now()}`), {
-          type: 'calendar',
-          date,
-          content: `${currentUser} 新增了活動: ${eventInput}`,
-          for: currentUser === 'P' ? 'L' : 'P',
-          timestamp: new Date().toISOString()
-        });
-      }, { onlyOnce: true });
+    const input = document.getElementById('event-input');
+    const val = input.value.trim();
+    if (!val) return alert('請輸入活動內容');
 
-      document.getElementById('event-input').value = '';
-      loadEventsAndComments(date);
-    }
+    const dateRef = ref(db, `calendar/${date}`);
+    onValue(dateRef, snapshot => {
+      const data = snapshot.val() || {};
+      const events = data.events || [];
+
+      if (events.includes(val)) {
+        alert('活動已存在');
+        return;
+      }
+
+      events.push(val);
+      set(dateRef, {
+        ...data,
+        events,
+        hasComments: data.hasComments || false
+      });
+      input.value = '';
+    }, { onlyOnce: true });
   });
 
+  // 新增留言
   document.getElementById('add-comment').addEventListener('click', () => {
     const date = document.getElementById('modal-date').textContent;
-    const commentInput = document.getElementById('comment-input').value;
-    if (commentInput) {
-      const dateRef = ref(db, `calendar/${date}`);
-      onValue(dateRef, (snapshot) => {
-        const data = snapshot.val() || {};
-        const comments = data.comments || [];
-        comments.push({
-          user: currentUser,
-          text: commentInput,
-          timestamp: new Date().toISOString()
-        });
-        set(dateRef, {
-          ...data,
-          comments,
-          hasComments: true,
-          [`hasNewFor${currentUser === 'P' ? 'L' : 'P'}`]: true
-        });
-        set(ref(db, `notices/${Date.now()}`), {
-          type: 'calendar',
-          date,
-          content: `${currentUser} 新增了留言`,
-          for: currentUser === 'P' ? 'L' : 'P',
-          timestamp: new Date().toISOString()
-        });
-      }, { onlyOnce: true });
+    const input = document.getElementById('comment-input');
+    const val = input.value.trim();
+    if (!val) return alert('請輸入留言');
 
-      document.getElementById('comment-input').value = '';
-      loadEventsAndComments(date);
-    }
+    const dateRef = ref(db, `calendar/${date}`);
+    onValue(dateRef, snapshot => {
+      const data = snapshot.val() || {};
+      const comments = data.comments || [];
+
+      comments.push({ user: currentUser, text: val });
+      set(dateRef, {
+        ...data,
+        events: data.events || [],
+        comments,
+        hasComments: true
+      });
+      input.value = '';
+    }, { onlyOnce: true });
   });
 
-  document.getElementById('close-modal').addEventListener('click', () => {
-    document.getElementById('modal').classList.add('hidden');
+  // 關閉 modal
+  document.getElementById('close-modal').addEventListener('click', hideModal);
+
+  // 回首頁
+  document.getElementById('home-btn').addEventListener('click', () => {
+    window.location.href = 'index.html';
   });
 
-  document.addEventListener('click', (e) => {
-    const date = document.getElementById('modal-date').textContent;
-    if (e.target.classList.contains('delete-event') && confirm('確定刪除活動？')) {
-      const index = e.target.dataset.index;
-      const dateRef = ref(db, `calendar/${date}`);
-      onValue(dateRef, (snapshot) => {
-        const data = snapshot.val();
-        data.events.splice(index, 1);
-        set(dateRef, data);
-      }, { onlyOnce: true });
-    } else if (e.target.classList.contains('delete-comment') && confirm('確定刪除留言？')) {
-      const index = e.target.dataset.index;
-      const dateRef = ref(db, `calendar/${date}`);
-      onValue(dateRef, (snapshot) => {
-        const data = snapshot.val();
-        data.comments.splice(index, 1);
-        set(dateRef, {
-          ...data,
-          hasComments: data.comments.length > 0
-        });
-      }, { onlyOnce: true });
-    }
+  // 登出
+  document.getElementById('logout-btn').addEventListener('click', () => {
+    sessionStorage.removeItem('user');
+    window.location.href = 'login.html';
   });
 });
 
+// Render 月曆
 function renderCalendar() {
-  const monthYear = document.getElementById('month-year');
-  const calendarBody = document.getElementById('calendar-body');
-  if (!monthYear || !calendarBody) return;
+  const tbody = document.getElementById('calendar-body');
+  tbody.innerHTML = '';
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
-  monthYear.textContent = `${year}年 ${month + 1}月`;
 
+  // 顯示年月
+  const monthYearText = `${year} 年 ${month + 1} 月`;
+  document.getElementById('month-year').textContent = monthYearText;
+
+  // 計算第一天星期幾（1=Mon, 7=Sun）
   const firstDay = new Date(year, month, 1);
-  const lastDay = new Date(year, month + 1, 0);
-  const startDay = (firstDay.getDay() + 6) % 7;
-  const daysInMonth = lastDay.getDate();
+  let startWeekday = firstDay.getDay(); // 0=Sun, 1=Mon...
+  startWeekday = startWeekday === 0 ? 7 : startWeekday;
 
-  calendarBody.innerHTML = '';
-  let row = document.createElement('tr');
+  // 該月天數
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-  for (let i = 0; i < startDay; i++) {
-    row.appendChild(document.createElement('td'));
-  }
+  // 填滿空白前置格子(一週七天，星期一開始)
+  let day = 1;
+  for (let week = 0; week < 6; week++) {
+    const tr = document.createElement('tr');
+    for (let i = 1; i <= 7; i++) {
+      const td = document.createElement('td');
 
-  for (let day = 1; day <= daysInMonth; day++) {
-    if ((startDay + day - 1) % 7 === 0 && day !== 1) {
-      calendarBody.appendChild(row);
-      row = document.createElement('tr');
+      if ((week === 0 && i < startWeekday) || day > daysInMonth) {
+        td.textContent = '';
+      } else {
+        td.textContent = day;
+        td.dataset.date = `${year}-${String(month + 1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+        day++;
+      }
+      tr.appendChild(td);
     }
-
-    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-    const dayOfWeek = (startDay + day - 1) % 7;
-
-    const td = document.createElement('td');
-    td.className = `
-      h-20
-      border border-black-300
-      align-top p-2
-      bg-[#fffaf4] hover:bg-[#f0e9e0]
-      rounded-md
-      cursor-pointer
-      transition-colors duration-200
-      calendar-cell
-    `;
-
-    // 六日變粉紅色字
-    if (dayOfWeek === 5 || dayOfWeek === 6) {
-      td.classList.add("text-pink-300");
-    }
-
-    // 存下日期資訊（如 2025-05-12）
-    td.dataset.date = dateStr;
-
-    // 日期排版靠上中間
-    const inner = document.createElement("div");
-    inner.className = "flex flex-col items-center justify-start h-full";
-
-    const dateSpan = document.createElement("span");
-    dateSpan.className = "text-sm font-semibold mt-1";
-    dateSpan.textContent = day;
-
-    const markerSpan = document.createElement("span");
-    markerSpan.id = `marker-${dateStr}`;
-    markerSpan.className = "text-base";
-
-    inner.appendChild(dateSpan);
-    inner.appendChild(markerSpan);
-    td.appendChild(inner);
-    row.appendChild(td);
+    tbody.appendChild(tr);
   }
-
-  calendarBody.appendChild(row);
 }
 
-function loadCalendarData() {
-  const calendarRef = ref(db, 'calendar');
-  onValue(calendarRef, (snapshot) => {
-    const data = snapshot.val();
-    if (data) {
-      Object.keys(data).forEach(date => {
-        const marker = document.getElementById(`marker-${date}`);
-        if (marker) {
-          marker.innerHTML = '';
-          if (data[date].hasComments) marker.innerHTML += '📓';
-          if (data[date][`hasNewFor${currentUser}`]) marker.innerHTML += '⭐';
-        }
-      });
-    }
+// 開啟 modal 並載入該日資料
+function openModal(date) {
+  document.getElementById('memo-board').classList.add('active');
+  document.getElementById('modal-date').textContent = date;
+  document.getElementById('event-input').value = '';
+  document.getElementById('comment-input').value = '';
+  loadEventsAndComments(date);
+}
+
+// 載入活動與留言列表
+function loadEventsAndComments(date) {
+  const dateRef = ref(db, `calendar/${date}`);
+  onValue(dateRef, snapshot => {
+    const data = snapshot.val() || {};
+    renderList('event-list', data.events || [], date, true);
+    renderList('comment-list', data.comments || [], date, false);
   });
 }
 
-function loadEventsAndComments(date) {
+// 渲染活動或留言列表
+function renderList(containerId, items, date, isEvent) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+
+  items.forEach((item, idx) => {
+    const div = document.createElement('div');
+    div.className = 'list-item';
+
+    const contentDiv = document.createElement('div');
+    contentDiv.textContent = isEvent ? item : `${item.user}: ${item.text}`;
+    div.appendChild(contentDiv);
+
+    const delBtn = document.createElement('button');
+    delBtn.textContent = '刪除';
+    delBtn.addEventListener('click', () => deleteItem(date, idx, isEvent));
+    div.appendChild(delBtn);
+
+    container.appendChild(div);
+  });
+}
+
+// 刪除事件或留言
+function deleteItem(date, idx, isEvent) {
   const dateRef = ref(db, `calendar/${date}`);
-  onValue(dateRef, (snapshot) => {
+  onValue(dateRef, snapshot => {
     const data = snapshot.val() || {};
-    const eventList = document.getElementById('event-list');
-    const commentList = document.getElementById('comment-list');
-
-    eventList.innerHTML = '';
-    commentList.innerHTML = '';
-
-    if (data.events) {
-      data.events.forEach((e, i) => {
-        const item = document.createElement('div');
-        item.className = 'flex justify-between items-center p-1 border-b';
-        item.innerHTML = `<span class="text-left w-full">${e}</span>
-          <button class="text-sm text-red-400 delete-event" data-index="${i}">刪除</button>`;
-        eventList.appendChild(item);
-      });
-    }
-
-    if (data.comments) {
-      data.comments.forEach((c, i) => {
-        const item = document.createElement('div');
-        item.className = 'flex justify-between items-start p-1 border-b';
-        item.innerHTML = `<div class="text-left">
-            <div class="font-semibold">${c.user}</div>
-            <div class="text-sm">${c.text}</div>
-          </div>
-          <button class="text-sm text-red-400 delete-comment" data-index="${i}">刪除</button>`;
-        commentList.appendChild(item);
-      });
-    }
-
-    // 清除已讀星星提示
-    if (data[`hasNewFor${currentUser}`]) {
+    if (isEvent) {
+      const events = data.events || [];
+      events.splice(idx, 1);
       set(dateRef, {
         ...data,
-        [`hasNewFor${currentUser}`]: false
+        events,
+      });
+    } else {
+      const comments = data.comments || [];
+      comments.splice(idx, 1);
+      set(dateRef, {
+        ...data,
+        comments,
       });
     }
   }, { onlyOnce: true });
+}
+function loadCalendarData() {
+  const calendarRef = ref(db, 'calendar');
+
+  onValue(calendarRef, snapshot => {
+    const data = snapshot.val();
+    if (!data) return;
+
+    Object.keys(data).forEach(date => {
+      const marker = document.querySelector(`[data-date="${date}"]`);
+      if (marker) {
+        // 可視化標記方式（例如在日期格子下方加上 emoji）
+        let emoji = '';
+        if (data[date].hasComments) emoji += '📓';
+        if (data[date].events && data[date].events.length > 0) emoji += '⭐';
+
+        // 將 emoji 顯示在 cell 中
+        if (!marker.querySelector('.marker')) {
+          const span = document.createElement('div');
+          span.className = 'marker text-xs';
+          span.textContent = emoji;
+          marker.appendChild(span);
+        } else {
+          marker.querySelector('.marker').textContent = emoji;
+        }
+      }
+    });
+  });
+}
+
+// 隱藏 modal
+function hideModal() {
+  document.getElementById('memo-board').classList.remove('active');
 }
