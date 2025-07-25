@@ -11,3 +11,12 @@ document.getElementById('login-form').addEventListener('submit', (e) => {
         errorMessage.classList.remove('hidden');
     }
 });
+function updateScale() {
+  const wrapper = document.querySelector('.scene-wrapper');
+  const scaleX = window.innerWidth / 1024;
+  const scaleY = window.innerHeight / 1536;
+  const scale = Math.min(scaleX, scaleY);
+  wrapper.style.setProperty('--scale-factor', scale);
+}
+window.addEventListener('resize', updateScale);
+window.addEventListener('load', updateScale);

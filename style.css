@@ -8,7 +8,28 @@ body, html {
   display: flex; justify-content: center; align-items: center;
   font-family: 'Noto Sans', sans-serif;
 }
-
+/* 登入框固定在畫面中央 */
+.login-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  max-width: 300px;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.85);
+  padding: 20px;
+  border-radius: 12px;
+  z-index: 10;
+}
+.viewport-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000; /* 可選背景 */
+  overflow: hidden;
+}
 /* 容器固定比例 1024:1536 (2:3) */
 .scene-wrapper {
   position: relative;
