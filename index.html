@@ -2,44 +2,37 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>首頁</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="bg-black">
-  <div class="scene-wrapper">
-    <div class="scene-ratio">
-      <img src="image/BG-1.PNG" class="bg-base" />
+<body>
 
-      <!-- 圖片按鈕 -->
-      <img src="image/月亮.png" id="moon" class="btn moon" />
-      <img src="image/夢境石.png" id="stone" class="btn stone" />
-      <img src="image/櫻桃.png" id="cherry" class="btn cherry" />
-      <img src="image/路燈.png" id="lamp" class="btn lamp" />
+  <div class="scene-wrapper" id="scene-wrapper">
 
-      <!-- 倒數水印 -->
-      <div id="countdown" class="absolute bottom-4 left-4 text-white text-sm" style="z-index: 20;"></div>
+    <img src="image/BG-1.PNG" alt="背景" class="bg-base" id="bg-base" />
+
+    <!-- 按鈕 -->
+    <button id="moon" class="scene-button" data-x="614.4" data-y="384" data-w="80" data-h="80" title="月亮"></button>
+    <button id="stone" class="scene-button" data-x="204.8" data-y="1024" data-w="80" data-h="80" title="夢境石"></button>
+    <button id="cherry" class="scene-button" data-x="170.67" data-y="256" data-w="80" data-h="80" title="櫻桃"></button>
+    <button id="lamp" class="scene-button" data-x="819.2" data-y="768" data-w="80" data-h="80" title="路燈"></button>
+
+    <!-- 導覽列 -->
+    <div class="bottom-bar">
+      <button id="back-btn">🔙 回上一頁</button>
+      <button id="home-btn">🏠 回首頁</button>
+      <button id="logout-btn">🚪 登出</button>
     </div>
 
-    <!-- 通知卡片 -->
-    <div id="notice" class="notice-card hidden"></div>
   </div>
 
-  <!-- 導覽按鈕：改為 fixed 永遠貼底 -->
-  <div class="nav-buttons fixed bottom-0 left-0 w-full flex justify-around bg-white bg-opacity-80 p-3 z-50">
-    <button onclick="history.back()" class="text-pink-500">🔙 回上一頁</button>
-    <button onclick="window.location.href='index.html'" class="text-pink-500">🏠 回首頁</button>
-    <button id="logout-btn" class="text-pink-500">🚪 登出</button>
-  </div>
-
-  <!-- Firebase -->
+  <!-- Firebase SDK -->
   <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js"></script>
   <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js"></script>
 
-  <!-- 主程式 -->
+  <!-- 你的主程式 -->
   <script type="module" src="index.js"></script>
-  <script src="index.js" defer>
-  </script>
+
 </body>
 </html>
