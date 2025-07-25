@@ -85,6 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   loadCountdown();
   loadNotices(user);
+  updateButtonPositions();
+
 
   // 綁定按鈕事件
   document.getElementById('moon').addEventListener('click', () => window.location.href = 'calendar.html');
@@ -103,9 +105,4 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('back-btn').addEventListener('click', () => history.back());
   document.getElementById('home-btn').addEventListener('click', () => window.location.href = 'index.html');
 
-  updateButtonPositions();
-});
-
-window.addEventListener('resize', () => {
-  updateButtonPositions();
 });
