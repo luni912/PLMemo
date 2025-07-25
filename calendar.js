@@ -175,10 +175,23 @@ function renderCalendar() {
     const dayOfWeek = (startDay + day - 1) % 7;
 
     const td = document.createElement('td');
-    td.className = "h-20 border align-top p-1 bg-white bg-opacity-80 cursor-pointer";
+    td.className = `
+      h-20
+      border border-black-300
+      align-top p-2
+      bg-[#fffaf4] hover:bg-[#f0e9e0]
+      rounded-md
+      cursor-pointer
+      transition-colors duration-200
+      calendar-cell
+    `;
+
+    // 六日變粉紅色字
     if (dayOfWeek === 5 || dayOfWeek === 6) {
       td.classList.add("text-pink-300");
     }
+
+    // 存下日期資訊（如 2025-05-12）
     td.dataset.date = dateStr;
 
     // 日期排版靠上中間

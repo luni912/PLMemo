@@ -110,7 +110,4 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = 'login.html';
   });
 
-  document.getElementById('back-btn').addEventListener('click', () => history.back());
-  document.getElementById('home-btn').addEventListener('click', () => window.location.href = 'index.html');
-
 });
