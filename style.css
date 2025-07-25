@@ -1,64 +1,162 @@
+/* ───── 🔧 基礎設定 ───── */
 body {
   font-family: 'Noto Sans', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #000; /* 超出部分顯示黑色 */
-  overflow: hidden; /* 防止滾動超出黑色區域 */
+  background-color: #000; /* 超出顯示黑底 */
+  overflow: hidden;        /* 防止滾動 */
 }
-
+img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto
+}
+/* ───── 📦 容器與背景 ───── */
 .container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: black;
+}
+/* 背景圖片樣式*/
+.scene-wrapper {
   position: relative;
   width: 100vw;
   height: 100vh;
-  max-width: 100%;
-  max-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: black;
+  z-index: 0;
+  overflow: hidden
 }
-
-.bg-image {
+.scene-ratio {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  width: 100%;
+  max-width: 960px;
+  z-index: 1;
+}
+.bg-base {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain; /* 確保圖片完整呈現 */
-  object-position: center; /* 圖片居中 */
-  position: absolute;
+  object-fit: contain;
+  z-index: 0;
   top: 0;
   left: 0;
-  z-index: 0;
+}
+/* 各元件定位 (依實際畫面微調) */
+.btn {
+  position: absolute;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  z-index: 50;
+}
+/* 月亮按鈕設定 */
+.btn.moon {
+  width: 33.5vw; /* 寬度為視窗寬度的 10% */
+  top: 12.5%;
+  right: 7%;
 }
 
+/* 夢境石按鈕 */
+.btn.stone {
+  width: 12vw;
+  bottom: 10%;
+  left: 10%;
+}
+/* 櫻桃按鈕 */
+.btn.cherry {
+  width: 12vw;
+  bottom: 10%;
+  left: 10%;
+}
+/* 路燈按鈕 */
+.btn.lamp {
+  width: 12vw;
+  bottom: 10%;
+  left: 10%;
+}
+/* RWD 補強（小螢幕微調） */
+@media screen and (max-width: 640px) {
+  .moon {
+    width: 20vw;
+    top: 3%;
+    right: 5%;
+  }
+}
+
+/* ───── 💧 倒數水印文字 ───── */
 #watermark {
   z-index: 1;
 }
 
-#moon, #stone, #lamp {
-  z-index: 2;
-  border-radius: 50%; /* 將月亮形狀改為圓形 */
+#watermark p {
+  animation: fadeIn 1.5s ease;
+  text-shadow: 1px 1px 3px #444;
 }
 
-#notice {
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* 通知卡片樣式 */
+.notice-card {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff8dc;
+  border: 2px dashed #ffcf40;
+  padding: 1rem;
+  max-width: 300px;
+  font-size: 0.95rem;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  z-index: 999;
+}
+.hidden {
+  display: none;
+}
+
+/* 星號通知提示 */
+#lamp-indicator {
+  position: absolute;
+  color: gold;
+  font-weight: bold;
+  font-size: 1.2rem;
   z-index: 3;
 }
 
-.glow {
-  box-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700;
-  animation: glow 1s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
-  from { box-shadow: 0 0 5px #FFD700; }
-  to { box-shadow: 0 0 15px #FFD700; }
-}
-
+/* ───── 🚪 導覽按鈕 ───── */
 .nav-buttons {
-  display: flex;
-  justify-content: space-around;
   position: fixed;
   bottom: 0;
-  width: 100%;
+  left: 0;
+  width: 100%
   background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: space-around;
   padding: 10px 0;
-  z-index: 4;
+  z-index: 100;
 }
 
+.nav-buttons button {
+  transition: all 0.3s ease;
+}
+
+.nav-buttons button:hover {
+  transform: scale(1.1);
+  color: #db2777;
+}
+
+/* ───── 🧾 表格（留言板 / 月曆活動） ───── */
 table td {
   padding: 10px;
   border: 1px solid #ccc;
@@ -71,7 +169,8 @@ table td span {
   right: 2px;
 }
 
+/* ───── 🖥️ 響應式調整 ───── */
 @media (min-width: 768px) {
   .nav-buttons { position: static; }
-  #moon, #stone, #lamp { width: 16px; height: 16px; } /* 桌面版縮小圖標，避免超出 */
+  #moon, #stone, #lamp { width: 16px; height: 16px; }
 }

@@ -1,30 +1,45 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>首頁</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>首頁</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="bg-black flex items-center justify-center min-h-screen min-w-screen">
-    <div class="container relative w-full h-full max-w-full max-h-full overflow-hidden">
-        <img src="BG-1.PNG" alt="背景圖片" class="bg-image w-full h-full object-contain">
-        <div id="watermark" class="absolute inset-0 flex items-center justify-center text-white opacity-50 text-2xl md:text-4xl text-center">
-            <div id="countdown"></div>
-        </div>
-        <img id="moon" src="https://img.icons8.com/ios-filled/50/FFFFFF/moon-symbol.png" alt="月亮" class="absolute top-4 right-4 w-12 h-12 md:w-16 md:h-16 cursor-pointer hover:opacity-80">
-        <img id="stone" src="https://img.icons8.com/ios-filled/50/FFFFFF/crystal.png" alt="夢境石" class="absolute bottom-4 left-4 w-12 h-12 md:w-16 md:h-16 cursor-pointer hover:opacity-80">
-        <img id="lamp" src="https://img.icons8.com/ios-filled/50/FFFFFF/street-light.png" alt="路燈" class="absolute top-1/2 right-4 w-12 h-12 md:w-16 md:h-16 cursor-pointer hover:opacity-80">
-        <div id="notice" class="hidden absolute bottom-10 right-10 bg-white bg-opacity-90 p-4 rounded shadow-lg transform rotate-2 max-w-xs"></div>
+<body class="bg-black">
+  <div class="scene-wrapper">
+    <div class="scene-ratio">
+      <img src="image/BG-1.PNG" class="bg-base" />
+
+      <!-- 圖片按鈕 -->
+      <img src="image/月亮.png" id="moon" class="btn moon" />
+      <img src="image/夢境石.png" id="stone" class="btn stone" />
+      <img src="image/櫻桃.png" id="cherry" class="btn cherry" />
+      <img src="image/路燈.png" id="lamp" class="btn lamp" />
+
+      <!-- 倒數水印 -->
+      <div id="countdown" class="absolute bottom-4 left-4 text-white text-sm" style="z-index: 20;"></div>
     </div>
-    <div class="nav-buttons bg-white bg-opacity-80 p-4 flex justify-around fixed bottom-0 w-full">
-        <button onclick="history.back()" class="text-pink-500">🔙 回上一頁</button>
-        <button onclick="window.location.href='index.html'" class="text-pink-500">🏠 回首頁</button>
-        <button id="logout-btn" class="text-pink-500">🚪 登出</button>
-    </div>
-    <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js"></script>
-    <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js"></script>
-    <script type="module" src="index.js"></script>
+
+    <!-- 通知卡片 -->
+    <div id="notice" class="notice-card hidden"></div>
+  </div>
+
+  <!-- 導覽按鈕：改為 fixed 永遠貼底 -->
+  <div class="nav-buttons fixed bottom-0 left-0 w-full flex justify-around bg-white bg-opacity-80 p-3 z-50">
+    <button onclick="history.back()" class="text-pink-500">🔙 回上一頁</button>
+    <button onclick="window.location.href='index.html'" class="text-pink-500">🏠 回首頁</button>
+    <button id="logout-btn" class="text-pink-500">🚪 登出</button>
+  </div>
+
+  <!-- Firebase -->
+  <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js"></script>
+
+  <!-- 主程式 -->
+  <script type="module" src="index.js"></script>
+  <script src="index.js" defer>
+  </script>
 </body>
 </html>
