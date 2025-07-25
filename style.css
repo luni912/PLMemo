@@ -103,3 +103,34 @@ body, html {
   user-select: none;
   pointer-events: none
 }
+/* 月曆 */
+.calendar-bg-base {
+  background: linear-gradient(to bottom right, #f1f1f1, #e4e1ec); 
+}
+
+.calendar-table th, .calendar-table td {
+  border: 1px solid rgb(255, 249, 189, 0.1);
+  padding: 0.5rem;
+  height: 4rem;
+}
+
+.modal-bg {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.calendar-container {
+  position: relative;
+  height: 100vh;
+  max-width: calc(100vh * 2 / 3);
+  max-height: calc(100vw * 3 / 2);
+  aspect-ratio: 2 / 3;
+  width: 100%;
+  margin: auto;
+  background-color: #f9e2d2;
+}
+.calendar-toolbar {
+  background-color: rgba(255 255 255 / 0.9)
+}
+.calendar-btn {
+  @apply text-pink-500 text-xl px-4;
+}
