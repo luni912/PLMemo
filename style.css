@@ -68,3 +68,17 @@ body, html {
   color: #db2777;
   transform: scale(1.1);
 }
+.countdown-text {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 0.8rem;
+  z-index: 20;
+  background: none;
+  padding: 5px 12px;
+  border-radius: 5px;
+  user-select: none;
+  pointer-events: none
+}

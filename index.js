@@ -44,18 +44,26 @@ function updateButtonPositions() {
 
 function loadCountdown() {
   const milestones = [
-    { name: '聊天開始日', date: '2025-03-26' },
-    { name: '第一次見面', date: '2025-04-19' },
-    { name: '在一起紀念日', date: '2025-05-05' }
+    { name: 'First chat', date: '2025-03-26' },
+    { name: 'First met', date: '2025-04-19' },
+    { name: 'In Love', date: '2025-05-05' }
   ];
   const countdownDiv = document.getElementById('countdown');
   if (!countdownDiv) return;
   countdownDiv.innerHTML = '';
+
   const today = new Date();
   milestones.forEach(milestone => {
     const date = new Date(milestone.date);
     const diffDays = Math.ceil((date - today) / (1000 * 60 * 60 * 24));
-    countdownDiv.innerHTML += `<p>${milestone.name}: 還剩 ${diffDays} 天</p>`;
+
+    if (diffDays > 0) {
+      countdownDiv.innerHTML += `<p>${milestone.name} ~ 還有 ${diffDays} 天</p>`;
+    } else if (diffDays === 0) {
+      countdownDiv.innerHTML += `<p>${milestone.name} ~ 就是今天！🎉</p>`;
+    } else {
+      countdownDiv.innerHTML += `<p>${milestone.name} ~  ${Math.abs(diffDays)} days</p>`;
+    }
   });
 }
 
