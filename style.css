@@ -59,28 +59,28 @@ img {
 }
 /* 月亮按鈕設定 */
 .btn.moon {
-  width: 33.5vw; /* 寬度為視窗寬度的 10% */
+  width: 33.5vw; 
   top: 12.5%;
   right: 7%;
 }
 
 /* 夢境石按鈕 */
 .btn.stone {
-  width: 12vw;
-  bottom: 10%;
-  left: 10%;
+  width: 32vw;
+  bottom: 24.7%;
+  left: -0.5%;
 }
 /* 櫻桃按鈕 */
 .btn.cherry {
-  width: 12vw;
-  bottom: 10%;
-  left: 10%;
+  width: 28vw;
+  top: 13.3%;
+  left: 14%;
 }
 /* 路燈按鈕 */
 .btn.lamp {
-  width: 12vw;
-  bottom: 10%;
-  left: 10%;
+  width: 7vw;
+  bottom: 47.5%;
+  right: 9%;
 }
 /* RWD 補強（小螢幕微調） */
 @media screen and (max-width: 640px) {
