@@ -125,6 +125,10 @@ html, body {
 }
 /* Modal */
 #memo-board {
+  position: absolute;
+  background: invisible);
+  padding: 1rem;
+  overflow-y: auto;
   border-radius: 0.1rem;
   padding: 5rem 4rem;
   max-width: 400px;
@@ -134,7 +138,6 @@ html, body {
   font-size: 0.8rem;;
   color: #ca9e86;
   display: none;
-  position: fixed;
   inset: 0;
   z-index: 9999;
   justify-content: center;
@@ -142,7 +145,7 @@ html, body {
 }
 
 #memo-board.active {
-  display: flex;
+  display: block;
 }
 
 #memo-board > div {
@@ -195,6 +198,7 @@ html, body {
   border-bottom: 1px invisible #e5d0ba;;
   padding: 0.2rem 0;
   font-size: 0.95rem;
+  line-height: 1.2; /* 預設是 1.5，可以縮緊 */
 }
 
 .list-item button {
@@ -241,6 +245,7 @@ html, body {
   }
 
   .calendar-container {
+    margin-top: 16px;
     padding: 0.5rem;
   }
 
@@ -286,9 +291,9 @@ html, body {
 .marker {
   display: block;
   font-size: 0.75rem;
-  white-space: nowrap;
+  white-space: pre-line;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 1.2;
-  max-height: 2.4em; /* 最多兩行（2個事件） */
+  line-height: 1.1;
+  max-height: 4.4em; /* 最多4行 */
 }
