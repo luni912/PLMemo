@@ -282,7 +282,10 @@ function loadEventsAndComments(date) {
       textDiv.style.paddingRight = '0.5rem';
 
       const btnGroup = document.createElement('div');
-
+      btnGroup.style.display = 'flex';
+      btnGroup.style.justifyContent = 'flex-end';
+      btnGroup.style.gap = '4px';
+      
       const editBtn = document.createElement('button');
       editBtn.textContent = '+';
       editBtn.className = 'edit-btn';
@@ -338,6 +341,9 @@ function loadEventsAndComments(date) {
       textDiv.style.paddingRight = '0.5rem';
 
       const btnGroup = document.createElement('div');
+      btnGroup.style.display = 'flex';
+      btnGroup.style.justifyContent = 'flex-end';
+      btnGroup.style.gap = '4px';
 
       const editBtn = document.createElement('button');
       editBtn.textContent = '+';
