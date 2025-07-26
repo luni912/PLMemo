@@ -10,7 +10,6 @@
 <body class="bg-[#fffaf4] flex justify-center items-center min-h-screen relative">
 
   <div class="calendar-container">
-    <link rel="stylesheet" href="calendar.css" />
     <!-- 頁首切換 -->
     <div class="calendar-header">
       <button id="prev-month" class="calendar-btn" aria-label="上一個月">◄</button>
@@ -35,7 +34,6 @@
     </table>
 
     <!-- 備忘錄 Modal -->
-    <!-- 備忘錄 Modal -->
     <div id="memo-board" role="dialog" aria-modal="true" aria-labelledby="modal-date">
       <div>
         <!-- 日期標題 -->
@@ -45,20 +43,22 @@
         <div id="event-list" class="mb-2"></div>
 
         <!-- 活動輸入 -->
-        <input id="event-input" type="text" placeholder="add event" />
-        <button id="add-event">Add</button>
+        <div class="input-group">
+          <input id="event-input" type="text" placeholder="add event" />
+          <button id="add-event">Add</button>
+          <hr style="margin: 1rem 0; border: none; border-top: 1px solid #ddd;" />
+        </div>
+      
 
-        <hr style="margin: 1rem 0; border: none; border-top: 1px solid #ddd;" />
-
-        <!-- 留言顯示區（要在輸入欄之前） -->
+        <!-- 留言顯示區 -->
         <div id="comment-list" class="mb-2"></div>
 
         <!-- 留言輸入 -->
-        <textarea id="comment-input" placeholder="Memo" rows="3"></textarea>
-        <button id="add-comment">Add</button>
-
-        <hr style="margin: 1rem 0; border: none; border-top: 1px solid #ddd;" />
-
+        <div class="input-group">
+          <textarea id="comment-input" placeholder="Memo" rows="3"></textarea>
+          <button id="add-comment">Add</button>
+          <hr style="margin: 1rem 0; border: none; border-top: 1px solid #ddd;" />
+        </div>
         <!-- 關閉按鈕 -->
         <button id="close-modal">Close</button>
       </div>

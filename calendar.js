@@ -99,9 +99,24 @@ document.addEventListener('DOMContentLoaded', () => {
         comments,
         hasComments: true
       });
+
       input.value = '';
+
+      // ⭐ 加上即時更新 marker（❣️）
+      const cell = document.querySelector(`[data-date="${date}"]`);
+      if (cell) {
+        let marker = cell.querySelector('.marker');
+        if (!marker) {
+          marker = document.createElement('div');
+          marker.className = 'marker text-xs';
+          cell.appendChild(marker);
+        }
+        const hasStar = marker.textContent.includes('⭐');
+        marker.textContent = (hasStar ? '⭐' : '') + '❣️';
+      }
     }, { onlyOnce: true });
   });
+
 
   // 關閉 modal
   document.getElementById('close-modal').addEventListener('click', hideModal);
@@ -193,10 +208,37 @@ function renderList(containerId, items, date, isEvent) {
 
     const contentDiv = document.createElement('div');
     contentDiv.textContent = isEvent ? item : `${item.user}: ${item.text}`;
+    contentDiv.classList.add('item-text');
     div.appendChild(contentDiv);
 
+    // 修改按鈕
+    const editBtn = document.createElement('button');
+    editBtn.textContent = 'Edit';
+    editBtn.className = 'edit-btn';
+    editBtn.addEventListener('click', () => {
+      const newText = prompt('請修改內容：', isEvent ? item : item.text);
+      if (!newText || newText.trim() === '') return;
+
+      const dateRef = ref(db, `calendar/${date}`);
+      onValue(dateRef, snapshot => {
+        const data = snapshot.val() || {};
+        if (isEvent) {
+          const events = data.events || [];
+          events[idx] = newText.trim();
+          set(dateRef, { ...data, events });
+        } else {
+          const comments = data.comments || [];
+          comments[idx].text = newText.trim();
+          set(dateRef, { ...data, comments });
+        }
+      }, { onlyOnce: true });
+    });
+    div.appendChild(editBtn);
+
+    // 刪除按鈕
     const delBtn = document.createElement('button');
     delBtn.textContent = 'Delete';
+    delBtn.className = 'delete-btn';
     delBtn.addEventListener('click', () => deleteItem(date, idx, isEvent));
     div.appendChild(delBtn);
 
@@ -204,8 +246,12 @@ function renderList(containerId, items, date, isEvent) {
   });
 }
 
+
 // 刪除事件或留言
 function deleteItem(date, idx, isEvent) {
+  const confirmMsg = isEvent ? "確定要刪除此活動嗎？" : "確定要刪除此留言嗎？";
+  if (!confirm(confirmMsg)) return;
+
   const dateRef = ref(db, `calendar/${date}`);
   onValue(dateRef, snapshot => {
     const data = snapshot.val() || {};
@@ -226,6 +272,7 @@ function deleteItem(date, idx, isEvent) {
     }
   }, { onlyOnce: true });
 }
+
 function loadCalendarData() {
   const calendarRef = ref(db, 'calendar');
 
@@ -237,15 +284,18 @@ function loadCalendarData() {
       const marker = document.querySelector(`[data-date="${date}"]`);
       if (marker) {
         // 可視化標記方式（例如在日期格子下方加上 emoji）
-        let emoji = '';
-        if (data[date].hasComments) emoji += '📓';
-        if (data[date].events && data[date].events.length > 0) emoji += '⭐';
+        let content = '';
+        if (data[date].events && data[date].events.length > 0) {
+          const previewEvents = data[date].events.slice(0, 2);
+          content = previewEvents.map(e => e.slice(0, 2)).join('\n');
+        }
+        if (data[date].hasComments) content += '\n❣️';
 
         // 將 emoji 顯示在 cell 中
         if (!marker.querySelector('.marker')) {
           const span = document.createElement('div');
           span.className = 'marker text-xs';
-          span.textContent = emoji;
+          span.textContent = content;
           marker.appendChild(span);
         } else {
           marker.querySelector('.marker').textContent = emoji;
