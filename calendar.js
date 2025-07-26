@@ -38,7 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadCalendarData();
     hideModal();
   });
-
   document.getElementById('next-month').addEventListener('click', () => {
     currentDate.setMonth(currentDate.getMonth() + 1);
     renderCalendar();
@@ -147,8 +146,10 @@ function renderCalendar() {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
 
-  const monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"];
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
   const monthYearText = `${monthNames[month]} ${year}`;
   document.getElementById('month-year').textContent = monthYearText;
 
@@ -263,109 +264,119 @@ function loadEventsAndComments(date) {
     eventList.innerHTML = '';
     commentList.innerHTML = '';
 
-    // 事件列表
-    // 事件列表
     (data.events || []).forEach((e, i) => {
       const li = document.createElement('li');
       li.className = 'list-item';
 
-      const span = document.createElement('div');
-      span.textContent = e;
+      // flex container，左右排列文字和按鈕群
+      const container = document.createElement('div');
+      container.style.display = 'flex';
+      container.style.justifyContent = 'space-between';
+      container.style.alignItems = 'center';
+
+      const textDiv = document.createElement('div');
+      textDiv.textContent = e;
+      textDiv.style.flexGrow = '1';
+      textDiv.style.textAlign = 'left';
+      textDiv.style.wordBreak = 'break-word';
+      textDiv.style.paddingRight = '0.5rem';
 
       const btnGroup = document.createElement('div');
-      btnGroup.style.flexShrink = '0';
-      btnGroup.style.display = 'flex';
-      btnGroup.style.gap = '0.3rem';
 
       const editBtn = document.createElement('button');
       editBtn.textContent = '+';
       editBtn.className = 'edit-btn';
-      editBtn.title = '修改活動';
       editBtn.onclick = () => {
-        const newVal = prompt('修改活動：', e);
-        if (newVal !== null && newVal.trim() !== '') {
+        const newText = prompt('修改活動：', e);
+        if (newText !== null) {
           const events = [...(data.events || [])];
-          events[i] = newVal.trim();
-          update(dateRef, { ...data, events });
-          updateCellMarkers(date, { ...data, events });
-          loadEventsAndComments(date);
+          events[i] = newText;
+          update(dateRef, { ...data, events })
+            .then(() => loadEventsAndComments(date));
         }
       };
 
       const delBtn = document.createElement('button');
-      delBtn.textContent = '–';
+      delBtn.textContent = '-';
       delBtn.className = 'delete-btn';
-      delBtn.title = '刪除活動';
       delBtn.onclick = () => {
         if (confirm('確定要刪除這個活動嗎？')) {
           const events = [...(data.events || [])];
           events.splice(i, 1);
-          update(dateRef, { ...data, events });
-          updateCellMarkers(date, { ...data, events });
-          loadEventsAndComments(date);
+          update(dateRef, { ...data, events })
+            .then(() => {
+              updateCellMarkers(date, { ...data, events });
+              loadEventsAndComments(date);
+            });
         }
       };
 
       btnGroup.appendChild(editBtn);
       btnGroup.appendChild(delBtn);
 
-      li.appendChild(span);
-      li.appendChild(btnGroup);
+      container.appendChild(textDiv);
+      container.appendChild(btnGroup);
 
+      li.appendChild(container);
       eventList.appendChild(li);
     });
 
-    // 留言列表同理改成 li.list-item
-
-
-    // 留言列表
     (data.comments || []).forEach((c, i) => {
-          const li = document.createElement('li');
-          li.className = 'list-item';
+      const li = document.createElement('li');
+      li.className = 'list-item';
 
-          const span = document.createElement('div');
-          span.textContent = `${c.user}: ${c.text}`;
+      const container = document.createElement('div');
+      container.style.display = 'flex';
+      container.style.justifyContent = 'space-between';
+      container.style.alignItems = 'center';
 
-          const btnGroup = document.createElement('div');
-          btnGroup.style.flexShrink = '0';
-          btnGroup.style.display = 'flex';
-          btnGroup.style.gap = '0.3rem';
+      const textDiv = document.createElement('div');
+      textDiv.textContent = `${c.user}: ${c.text}`;
+      textDiv.style.flexGrow = '1';
+      textDiv.style.textAlign = 'left';
+      textDiv.style.wordBreak = 'break-word';
+      textDiv.style.paddingRight = '0.5rem';
 
-          const editBtn = document.createElement('button');
-          editBtn.textContent = '+';
-          editBtn.className = 'edit-btn';
-          editBtn.title = '修改留言';
-          editBtn.onclick = () => {
-            const newText = prompt('修改留言：', c.text);
-            if (newText !== null && newText.trim() !== '') {
-              const comments = [...(data.comments || [])];
-              comments[i].text = newText.trim();
-              update(dateRef, { ...data, comments });
+      const btnGroup = document.createElement('div');
+
+      const editBtn = document.createElement('button');
+      editBtn.textContent = '+';
+      editBtn.className = 'edit-btn';
+      editBtn.onclick = () => {
+        const newText = prompt('修改留言：', c.text);
+        if (newText !== null) {
+          const comments = [...(data.comments || [])];
+          comments[i].text = newText;
+          update(dateRef, { ...data, comments })
+            .then(() => loadEventsAndComments(date));
+        }
+      };
+
+      const delBtn = document.createElement('button');
+      delBtn.textContent = '-';
+      delBtn.className = 'delete-btn';
+      delBtn.onclick = () => {
+        if (confirm('確定要刪除這則留言嗎？')) {
+          const comments = [...(data.comments || [])];
+          comments.splice(i, 1);
+          const hasComments = comments.length > 0;
+          const newData = { ...data, comments, hasComments };
+          update(dateRef, newData)
+            .then(() => {
+              updateCellMarkers(date, newData);
               loadEventsAndComments(date);
-            }
-          };
+            });
+        }
+      };
 
-          const delBtn = document.createElement('button');
-          delBtn.textContent = '–';
-          delBtn.className = 'delete-btn';
-          delBtn.title = '刪除留言';
-          delBtn.onclick = () => {
-            if (confirm('確定要刪除這則留言嗎？')) {
-              const comments = [...(data.comments || [])];
-              comments.splice(i, 1);
-              update(dateRef, { ...data, comments });
-              updateCellMarkers(date, data);
-              loadEventsAndComments(date);
-            }
-          };
+      btnGroup.appendChild(editBtn);
+      btnGroup.appendChild(delBtn);
 
-          btnGroup.appendChild(editBtn);
-          btnGroup.appendChild(delBtn);
+      container.appendChild(textDiv);
+      container.appendChild(btnGroup);
 
-          li.appendChild(span);
-          li.appendChild(btnGroup);
-
-          commentList.appendChild(li);
-        });
-      }, { onlyOnce: true });
-    }
+      li.appendChild(container);
+      commentList.appendChild(li);
+    });
+  }, { onlyOnce: true });
+}
