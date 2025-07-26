@@ -9,8 +9,10 @@ html, body {
 /* 主容器：會根據寬度自適應縮放 */
 .calendar-container {
   position: relative;
-  width: 90vw;
-  max-width: 600px;
+  width: 100vw;
+  height: 100vh;
+  max-width: calc(100vh * 2 / 3);
+  max-height: calc(100vw * 3 / 2);
   aspect-ratio: 2 / 3;
   background-color: #fff0e5;
   margin: auto;
