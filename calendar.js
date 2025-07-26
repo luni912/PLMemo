@@ -264,11 +264,11 @@ function loadEventsAndComments(date) {
     eventList.innerHTML = '';
     commentList.innerHTML = '';
 
+    // 活動列表
     (data.events || []).forEach((e, i) => {
       const li = document.createElement('li');
       li.className = 'list-item';
 
-      // flex container，左右排列文字和按鈕群
       const container = document.createElement('div');
       container.style.display = 'flex';
       container.style.justifyContent = 'space-between';
@@ -285,7 +285,8 @@ function loadEventsAndComments(date) {
       btnGroup.style.display = 'flex';
       btnGroup.style.justifyContent = 'flex-end';
       btnGroup.style.gap = '4px';
-      
+
+      // 修改按鈕 '+'
       const editBtn = document.createElement('button');
       editBtn.textContent = '+';
       editBtn.className = 'edit-btn';
@@ -293,12 +294,15 @@ function loadEventsAndComments(date) {
         const newText = prompt('修改活動：', e);
         if (newText !== null) {
           const events = [...(data.events || [])];
-          events[i] = newText;
+          events[i] = newText.trim();
+          if (events[i].length === 0) return alert('活動內容不可空白');
           update(dateRef, { ...data, events })
-            .then(() => loadEventsAndComments(date));
+            .then(() => loadEventsAndComments(date))
+            .catch(console.error);
         }
       };
 
+      // 刪除按鈕 '-'
       const delBtn = document.createElement('button');
       delBtn.textContent = '-';
       delBtn.className = 'delete-btn';
@@ -310,7 +314,8 @@ function loadEventsAndComments(date) {
             .then(() => {
               updateCellMarkers(date, { ...data, events });
               loadEventsAndComments(date);
-            });
+            })
+            .catch(console.error);
         }
       };
 
@@ -324,6 +329,7 @@ function loadEventsAndComments(date) {
       eventList.appendChild(li);
     });
 
+    // 留言列表
     (data.comments || []).forEach((c, i) => {
       const li = document.createElement('li');
       li.className = 'list-item';
@@ -345,6 +351,7 @@ function loadEventsAndComments(date) {
       btnGroup.style.justifyContent = 'flex-end';
       btnGroup.style.gap = '4px';
 
+      // 修改按鈕 '+'
       const editBtn = document.createElement('button');
       editBtn.textContent = '+';
       editBtn.className = 'edit-btn';
@@ -352,12 +359,15 @@ function loadEventsAndComments(date) {
         const newText = prompt('修改留言：', c.text);
         if (newText !== null) {
           const comments = [...(data.comments || [])];
-          comments[i].text = newText;
+          comments[i].text = newText.trim();
+          if (comments[i].text.length === 0) return alert('留言內容不可空白');
           update(dateRef, { ...data, comments })
-            .then(() => loadEventsAndComments(date));
+            .then(() => loadEventsAndComments(date))
+            .catch(console.error);
         }
       };
 
+      // 刪除按鈕 '-'
       const delBtn = document.createElement('button');
       delBtn.textContent = '-';
       delBtn.className = 'delete-btn';
@@ -371,7 +381,8 @@ function loadEventsAndComments(date) {
             .then(() => {
               updateCellMarkers(date, newData);
               loadEventsAndComments(date);
-            });
+            })
+            .catch(console.error);
         }
       };
 
