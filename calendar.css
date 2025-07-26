@@ -1,0 +1,235 @@
+/* 通用設定 */
+html, body {
+  background-color: #000 !important;
+  color: white;
+  margin: 0;
+  padding: 0;
+}
+
+/* 主容器：會根據寬度自適應縮放 */
+.calendar-container {
+  position: relative;
+  width: 90vw;
+  max-width: 600px;
+  aspect-ratio: 2 / 3;
+  background-color: #fff0e5;
+  margin: auto;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* 月曆表格 */
+.calendar-table {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed; /* 確保格子平均分配寬度 */
+  flex-grow: 1;
+  user-select: none;
+}
+
+/* 星期列（Mon - Sun） */
+.calendar-table thead th {
+  height: 2rem;
+  padding: 0.25rem;
+  font-weight: bold;
+  background-color: #fcefe3;
+  color: #8b5e3c;
+}
+
+/* 日期格子統一大小 */
+.calendar-table td {
+  height: 4rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.calendar-table th,
+.calendar-table td {
+  width: 14.28%; /* 100% / 7 days */
+  border: 1px solid rgba(186, 172, 13, 0.1);
+  text-align: center;
+  vertical-align: top;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: background-color 0.2s;
+}
+
+.calendar-table td:hover {
+  background-color: #f0e9e0;
+}
+/* 平日（星期一到星期五）的日期數字顏色 */
+.calendar-table td:nth-child(1),
+.calendar-table td:nth-child(2),
+.calendar-table td:nth-child(3),
+.calendar-table td:nth-child(4),
+.calendar-table td:nth-child(5) {
+  color: #cfab81; 
+}
+
+/* 週六（日六）與週日上色 */
+.calendar-table thead th:nth-child(6),
+.calendar-table thead th:nth-child(7),
+.calendar-table td:nth-child(6),
+.calendar-table td:nth-child(7) {
+  color: #ba4a82; /* pink-500 */
+}
+
+/* 頁首月份切換 */
+.calendar-header {
+  color: #c9aa8d;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  user-select: none;
+}
+
+.calendar-btn {
+  color: #ab610d;
+  font-size: 1.5rem;
+  padding: 0 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* 底部工具列（固定在底） */
+.calendar-toolbar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.3);
+  display: flex;
+  justify-content: space-around;
+  padding: 0.5rem 0;
+  user-select: none;
+  border-top: 1px solid #ddd;
+}
+
+.calendar-toolbar button {
+  color: #c9b29c;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+#month-year {
+  font-family: 'Georgia', 'Times New Roman', serif; /* 優雅字體 */
+  font-size: 1.25rem;
+  color: #5b4328;
+  letter-spacing: 0.05em;
+}
+/* Modal */
+#memo-board {
+  border-radius: 0.1rem;
+  padding: 5rem 4rem;
+  max-width: 400px;
+  width: 70%;
+  max-height: 80vh;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 0.8rem;;
+  color: #ca9e86;
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+#memo-board.active {
+  display: flex;
+}
+
+#memo-board > div {
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 1rem 1.5rem;
+  max-width: 400px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+}
+
+#memo-board h2 {
+  margin-top: 0.2rem;
+  text-align: center;
+}
+
+#memo-board input[type="text"],
+#memo-board textarea {
+  border: 1px solid #e5d0ba;
+  border-radius: 0.375rem;
+  padding: 0.2rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  resize: vertical;
+  font-family: inherit;
+  background-color: #fff9f3;
+  color: #5b4328;
+}
+
+#memo-board button {
+  background-color: #d9b7b5; /* 柔粉紅 */
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px invisible #e5d0ba;;
+  padding: 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+.list-item button {
+  background: none;
+  color: #d45c6d; /* 柔和紅 */
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.list-item div {
+  flex-grow: 1;
+  text-align: left;
+  word-break: break-word;
+  padding-right: 0.5rem;
+}
+
+/* 響應式設定（手機優化） */
+@media (max-width: 480px) {
+  .calendar-table th,
+  .calendar-table td {
+    font-size: 0.75rem;
+    height: 3rem;
+    padding: 0.1rem;
+  }
+
+  .calendar-header h1 {
+    font-size: 1.25rem;
+  }
+
+  .calendar-container {
+    padding: 0.5rem;
+  }
+
+  .calendar-toolbar button {
+    font-size: 0.875rem;
+  }
+}

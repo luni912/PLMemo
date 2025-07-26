@@ -127,7 +127,12 @@ function renderCalendar() {
   const month = currentDate.getMonth();
 
   // 顯示年月
-  const monthYearText = `${year} 年 ${month + 1} 月`;
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  const monthYearText = `${monthNames[month]} ${year}`;
+
   document.getElementById('month-year').textContent = monthYearText;
 
   // 計算第一天星期幾（1=Mon, 7=Sun）
@@ -191,7 +196,7 @@ function renderList(containerId, items, date, isEvent) {
     div.appendChild(contentDiv);
 
     const delBtn = document.createElement('button');
-    delBtn.textContent = '刪除';
+    delBtn.textContent = 'Delete';
     delBtn.addEventListener('click', () => deleteItem(date, idx, isEvent));
     div.appendChild(delBtn);
 
