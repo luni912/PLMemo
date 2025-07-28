@@ -117,7 +117,7 @@ function updateNoteContent(list, data, type) {
 
     // 儲存按鈕
     const saveBtn = document.createElement('button');
-    saveBtn.textContent = '+';
+    saveBtn.textContent = 'V';
     saveBtn.title = '儲存';
     saveBtn.addEventListener('click', () => {
       set(ref(db, `dream/${user}/${type}/${id}`), { text: inputText.value, date: inputDate.value });
