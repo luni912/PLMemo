@@ -16,7 +16,8 @@ const db = getDatabase(app);
 const user = sessionStorage.getItem('user');
 if (!user) window.location.href = 'login.html';
 
-const wishRef = ref(db, `wishList/${user}`);
+// ✅ 改為共用清單的路徑
+const wishRef = ref(db, `wishList/shared`);
 const wishList = document.getElementById('wish-list');
 const addBtn = document.getElementById('add-wish');
 
@@ -48,7 +49,7 @@ function createWishItem(id, text) {
   input.style.outline = 'none';
 
   input.addEventListener('change', () => {
-    set(ref(db, `wishList/${user}/${id}`), input.value);
+    set(ref(db, `wishList/shared/${id}`), input.value);
   });
 
   const actions = document.createElement('div');
@@ -58,7 +59,7 @@ function createWishItem(id, text) {
   editBtn.textContent = 'v';
   editBtn.title = '儲存';
   editBtn.addEventListener('click', () => {
-    set(ref(db, `wishList/${user}/${id}`), input.value);
+    set(ref(db, `wishList/shared/${id}`), input.value);
   });
 
   const deleteBtn = document.createElement('button');
@@ -66,7 +67,7 @@ function createWishItem(id, text) {
   deleteBtn.title = '刪除願望';
   deleteBtn.addEventListener('click', () => {
     showConfirmModal(() => {
-      remove(ref(db, `wishList/${user}/${id}`));
+      remove(ref(db, `wishList/shared/${id}`));
     });
   });
 

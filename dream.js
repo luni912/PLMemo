@@ -32,7 +32,7 @@ const notesContainer = document.getElementById('notes-container');
 let openNotes = {};
 
 ['concert', 'exhibit', 'music', 'movie'].forEach(type => {
-  const listRef = ref(db, `dream/${user}/${type}`);
+  const listRef = ref(db, `dream/shared/${type}`);
 
   onValue(listRef, snapshot => {
     const data = snapshot.val() || {};
@@ -73,7 +73,7 @@ function createNote(type) {
   note.querySelector('.add-entry').addEventListener('click', () => {
     // 新增時預設值為空字串與今日日期
     const today = new Date().toISOString().slice(0, 10); // yyyy-MM-dd
-    const newRef = push(ref(db, `dream/${user}/${type}`));
+    const newRef = push(ref(db, `dream/shared/${type}`));
     set(newRef, { text: '', date: today });
   });
 
@@ -102,7 +102,7 @@ function updateNoteContent(list, data, type) {
     inputText.placeholder = '輸入事件';
     inputText.style.marginRight = '8px';
     inputText.addEventListener('change', () => {
-      set(ref(db, `dream/${user}/${type}/${id}`), { text: inputText.value, date });
+      set(ref(db, `dream/shared/${type}/${id}`), { text: inputText.value, date });
     });
 
     // 日期輸入框
@@ -112,7 +112,7 @@ function updateNoteContent(list, data, type) {
     inputDate.title = '選擇日期';
     inputDate.style.width = '110px';
     inputDate.addEventListener('change', () => {
-      set(ref(db, `dream/${user}/${type}/${id}`), { text: inputText.value, date: inputDate.value });
+      set(ref(db, `dream/shared/${type}/${id}`), { text: inputText.value, date: inputDate.value });
     });
 
     // 儲存按鈕
@@ -120,7 +120,7 @@ function updateNoteContent(list, data, type) {
     saveBtn.textContent = 'v';
     saveBtn.title = '儲存';
     saveBtn.addEventListener('click', () => {
-      set(ref(db, `dream/${user}/${type}/${id}`), { text: inputText.value, date: inputDate.value });
+      set(ref(db, `dream/shared/${type}/${id}`), { text: inputText.value, date: inputDate.value });
     });
 
     // 刪除按鈕
@@ -128,7 +128,7 @@ function updateNoteContent(list, data, type) {
     deleteBtn.textContent = '-';
     deleteBtn.title = '刪除';
     deleteBtn.addEventListener('click', () => {
-      pendingDelete = ref(db, `dream/${user}/${type}/${id}`);
+      pendingDelete = ref(db, `dream/shared/${type}/${id}`);
       modal.classList.remove('hidden');
     });
 
@@ -149,7 +149,7 @@ Array.from(document.getElementsByClassName('dream-btn')).forEach(btn => {
     openNotes[type] = note;
 
     // 初始化內容
-    onValue(ref(db, `dream/${user}/${type}`), snapshot => {
+    onValue(ref(db, `dream/shared/${type}`), snapshot => {
       const data = snapshot.val() || {};
       updateNoteContent(note.querySelector('ol'), data, type);
     });
