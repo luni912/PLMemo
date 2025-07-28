@@ -5,6 +5,9 @@ const minesweeper = document.getElementById('minesweeper');
 const homeBtn = document.getElementById('home-btn');
 const logoutBtn = document.getElementById('logout-btn');
 const resetBtn = document.getElementById('reset-btn');
+const modal = document.getElementById('gameover-modal');
+const modalText = document.getElementById('modal-text');
+const modalRestartBtn = document.getElementById('modal-restart-btn');
 
 let board = [];
 let revealedCount = 0;
@@ -15,11 +18,12 @@ function initBoard() {
   revealedCount = 0;
   gameOver = false;
   minesweeper.innerHTML = '';
+  hideGameOverModal();
 
   // 初始化格子資料
-  for(let r = 0; r < rows; r++) {
+  for (let r = 0; r < rows; r++) {
     board[r] = [];
-    for(let c = 0; c < cols; c++) {
+    for (let c = 0; c < cols; c++) {
       board[r][c] = {
         mine: false,
         revealed: false,
@@ -32,26 +36,26 @@ function initBoard() {
 
   // 放置地雷
   let placed = 0;
-  while(placed < minesCount) {
+  while (placed < minesCount) {
     let r = Math.floor(Math.random() * rows);
     let c = Math.floor(Math.random() * cols);
-    if(!board[r][c].mine) {
+    if (!board[r][c].mine) {
       board[r][c].mine = true;
       placed++;
     }
   }
 
   // 計算周圍地雷數
-  for(let r = 0; r < rows; r++) {
-    for(let c = 0; c < cols; c++) {
-      if(!board[r][c].mine) {
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (!board[r][c].mine) {
         let count = 0;
-        for(let dr = -1; dr <= 1; dr++) {
-          for(let dc = -1; dc <=1; dc++) {
+        for (let dr = -1; dr <= 1; dr++) {
+          for (let dc = -1; dc <= 1; dc++) {
             let nr = r + dr;
             let nc = c + dc;
-            if(nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
-              if(board[nr][nc].mine) count++;
+            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+              if (board[nr][nc].mine) count++;
             }
           }
         }
@@ -61,8 +65,8 @@ function initBoard() {
   }
 
   // 建立DOM元素
-  for(let r = 0; r < rows; r++) {
-    for(let c = 0; c < cols; c++) {
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
       const cell = document.createElement('button');
       cell.classList.add('cell');
       cell.dataset.row = r;
@@ -76,22 +80,22 @@ function initBoard() {
 }
 
 function onCellClick(e) {
-  if(gameOver) return;
+  if (gameOver) return;
   const r = parseInt(e.currentTarget.dataset.row);
   const c = parseInt(e.currentTarget.dataset.col);
   const cell = board[r][c];
-  if(cell.revealed || cell.flagged) return;
+  if (cell.revealed || cell.flagged) return;
   revealCell(r, c);
   checkWin();
 }
 
 function onCellRightClick(e) {
   e.preventDefault();
-  if(gameOver) return;
+  if (gameOver) return;
   const r = parseInt(e.currentTarget.dataset.row);
   const c = parseInt(e.currentTarget.dataset.col);
   const cell = board[r][c];
-  if(cell.revealed) return;
+  if (cell.revealed) return;
   cell.flagged = !cell.flagged;
   cell.element.textContent = cell.flagged ? '🚩' : '';
   cell.element.classList.toggle('flagged', cell.flagged);
@@ -99,31 +103,30 @@ function onCellRightClick(e) {
 
 function revealCell(r, c) {
   const cell = board[r][c];
-  if(cell.revealed || cell.flagged) return;
+  if (cell.revealed || cell.flagged) return;
   cell.revealed = true;
   cell.element.classList.add('revealed');
   revealedCount++;
 
-  if(cell.mine) {
-    cell.element.textContent = '🍒'; // 用櫻桃代替地雷
+  if (cell.mine) {
+    cell.element.textContent = '🍒';
     cell.element.classList.add('mine');
     gameOver = true;
     revealAllMines();
-    alert('踩到櫻桃地雷了！遊戲結束 🍒💥');
+    showGameOverModal('Boom! 🍒💥');
     return;
   }
 
-  if(cell.adjacentMines > 0) {
+  if (cell.adjacentMines > 0) {
     cell.element.textContent = cell.adjacentMines;
   } else {
     cell.element.textContent = '';
-    // 自動揭露周圍空白格
-    for(let dr = -1; dr <= 1; dr++) {
-      for(let dc = -1; dc <= 1; dc++) {
+    for (let dr = -1; dr <= 1; dr++) {
+      for (let dc = -1; dc <= 1; dc++) {
         let nr = r + dr;
         let nc = c + dc;
-        if(nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
-          if(!board[nr][nc].revealed) {
+        if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+          if (!board[nr][nc].revealed) {
             revealCell(nr, nc);
           }
         }
@@ -133,9 +136,9 @@ function revealCell(r, c) {
 }
 
 function revealAllMines() {
-  for(let r = 0; r < rows; r++) {
-    for(let c = 0; c < cols; c++) {
-      if(board[r][c].mine) {
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (board[r][c].mine) {
         const el = board[r][c].element;
         el.textContent = '🍒';
         el.classList.add('mine', 'revealed');
@@ -148,12 +151,22 @@ function revealAllMines() {
 }
 
 function checkWin() {
-  if(gameOver) return;
-  if(revealedCount === rows * cols - minesCount) {
+  if (gameOver) return;
+  if (revealedCount === rows * cols - minesCount) {
     gameOver = true;
-    alert('恭喜！你成功避開所有櫻桃地雷 🍒🎉');
     revealAllMines();
+    showGameOverModal('恭喜！成功避開所有櫻桃地雷 🍒🎉');
   }
+}
+
+// 彈出框控制
+function showGameOverModal(message) {
+  modalText.textContent = message;
+  modal.classList.remove('hidden');
+}
+
+function hideGameOverModal() {
+  modal.classList.add('hidden');
 }
 
 // 按鈕事件
@@ -165,8 +178,16 @@ logoutBtn.addEventListener('click', () => {
   sessionStorage.clear();
   window.location.href = 'login.html';
 });
+
 resetBtn.addEventListener('click', () => {
   initBoard();
 });
-// 初始化遊戲
+
+modalRestartBtn.addEventListener('click', () => {
+  initBoard();
+});
+
+
+// 初始化
+hideGameOverModal();
 initBoard();

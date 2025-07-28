@@ -20,7 +20,7 @@ body, html {
   max-width: calc(100vh * 2 / 3);
   max-height: calc(100vw * 3 / 2);
   aspect-ratio: 2 / 3;
-  background-color: #ffb6c1; /* 櫻桃粉紅色 */
+  background-color: #ffd6dc; /* 櫻桃粉紅色 */
   border-radius: 20px;
   box-shadow: 0 0 15px #ff69b4aa;
   display: flex;
@@ -32,7 +32,7 @@ body, html {
 
 /* 標題 */
 h1 {
-  margin: 0 0 15px 0;
+  margin: 0 0 20px 0;
   font-size: 1.3rem;
   color: #d81e5b;
   font-weight: 700;
@@ -150,4 +150,81 @@ h1 {
 .bottom-bar button:hover {
   background-color: #ff8a8a;
   transform: scale(1.1);
+}
+/* 隱藏用 */
+.hidden {
+  display: none;
+}
+
+/* 背景遮罩 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 192, 203, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* 彈出框本體 */
+.modal-content {
+  background-color: #fff0f6;
+  border: 3px solid #ff69b4;
+  border-radius: 16px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 0 15px #ff69b4aa;
+  animation: pop 0.3s ease-out;
+  max-width: 300px;
+  width: 80%;
+}
+
+.modal-content h2 {
+  color: #ff3366;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  font-family: 'Cute Font', 'Noto Sans TC', sans-serif;
+}
+
+.modal-content p {
+  color: #aa0066;
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+/* 按鈕們 */
+.modal-buttons button {
+  margin: 0 10px;
+  padding: 10px 16px;
+  background-color: #ff80ab;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.modal-buttons button:hover {
+  background-color: #ff4081;
+}
+
+/* 彈出動畫 */
+@keyframes pop {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.hidden {
+  display: none;
 }
