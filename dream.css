@@ -193,13 +193,15 @@ h1 {
 
 /* Dream 便條紙彈窗樣式 */
 .dream-note-popup {
+  
   position: fixed;
   top: 50%;
   left: 50%;
   width: 320px;
-  max-height: 360px;
+  max-height: 70vh;
+  overflow: hidden;
   transform: translate(-50%, -50%);
-  background: #f9fdff;
+  background: #f0faff;
   border: 2px dashed #88bbdd;
   border-radius: 16px;
   padding: 4px;
@@ -236,6 +238,7 @@ h1 {
 }
 
 .note-items {
+  overflow-y: auto;
   padding-left: 0;
   margin: 0;
 }
@@ -249,6 +252,10 @@ h1 {
 /* 清單可滾動 */
 .dream-note-popup .dream-item {
   display: flex;
+  overflow-y: auto;
+  flex: 1;
+  padding: 8px;
+  margin: 0;
   align-items: flex-start;
   gap: 1px; /* 👈 原本 8px 太寬了，這裡改成 4px */
   margin-bottom: 4px; /* 👈 更貼近每行 */
