@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>夢境回憶錄</title>
+  <link rel="stylesheet" href="dream.css" />
+</head>
+<body>
+  <div class="scene-wrapper">
+    <div class="dream-container">
+      <h1>夢境回憶錄</h1>
+      <p class="subtitle">走在一起是緣份，一起在走是幸福</p>
+
+      <div class="counter">
+        <p>一起參加 <span id="concert-count">0</span> 場演唱會</p>
+        <p>一起參加 <span id="exhibit-count">0</span> 場展覽</p>
+        <p>一起參加 <span id="music-count">0</span> 場音樂會/交響樂/歌劇</p>
+      </div>
+
+      <div class="dream-buttons">
+        <button class="dream-btn" data-type="concert">演唱會</button>
+        <button class="dream-btn" data-type="exhibit">展覽</button>
+        <button class="dream-btn" data-type="music">音樂會/交響樂/歌劇</button>
+      </div>
+
+      <!-- 便條紙彈跳容器，動態加入 -->
+      <div id="notes-container"></div>
+    </div>
+
+    <div class="bottom-center-buttons">
+      <button id="home-btn">🏠 Home</button>
+      <button id="logout-btn">🚪 Logout</button>
+    </div>
+  </div>
+
+  <!-- 確認刪除彈窗 -->
+  <div id="confirm-modal" class="hidden">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <p>確定要刪除這項記錄嗎？</p>
+      <div class="modal-buttons">
+        <button id="cancel-delete">❌</button>
+        <button id="confirm-delete">✅</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js"></script>
+  <!-- 主要 JS 程式 -->
+  <script type="module" src="dream.js"></script>
+</body>
+</html>
