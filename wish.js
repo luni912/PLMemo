@@ -47,7 +47,6 @@ function createWishItem(id, text) {
   input.style.background = 'transparent';
   input.style.outline = 'none';
 
-  // 即時儲存更新
   input.addEventListener('change', () => {
     set(ref(db, `wishList/${user}/${id}`), input.value);
   });
@@ -57,7 +56,7 @@ function createWishItem(id, text) {
 
   const editBtn = document.createElement('button');
   editBtn.textContent = '+';
-  editBtn.title = '手動儲存';
+  editBtn.title = '儲存';
   editBtn.addEventListener('click', () => {
     set(ref(db, `wishList/${user}/${id}`), input.value);
   });
@@ -71,24 +70,6 @@ function createWishItem(id, text) {
     });
   });
 
-  function showConfirmModal(onConfirm) {
-    const modal = document.getElementById('confirm-modal');
-    const cancelBtn = document.getElementById('cancel-delete');
-    const confirmBtn = document.getElementById('confirm-delete');
-
-    modal.classList.remove('hidden');
-
-    const close = () => modal.classList.add('hidden');
-
-    cancelBtn.onclick = close;
-    confirmBtn.onclick = () => {
-      onConfirm();
-      close();
-    };
-  }
-
-
-
   actions.appendChild(editBtn);
   actions.appendChild(deleteBtn);
   li.appendChild(input);
@@ -97,11 +78,27 @@ function createWishItem(id, text) {
   wishList.appendChild(li);
 }
 
-// 回首頁與登出按鈕
+// 顯示確認彈窗
+function showConfirmModal(onConfirm) {
+  const modal = document.getElementById('confirm-modal');
+  const cancelBtn = document.getElementById('cancel-delete');
+  const confirmBtn = document.getElementById('confirm-delete');
+
+  modal.classList.remove('hidden');
+
+  const close = () => modal.classList.add('hidden');
+
+  cancelBtn.onclick = close;
+  confirmBtn.onclick = () => {
+    onConfirm();
+    close();
+  };
+}
+
+// 回首頁與登出
 document.getElementById('home-btn').addEventListener('click', () => {
   window.location.href = 'index.html';
 });
-
 document.getElementById('logout-btn').addEventListener('click', () => {
   sessionStorage.clear();
   window.location.href = 'login.html';

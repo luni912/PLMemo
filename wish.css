@@ -19,12 +19,6 @@ body, html {
   max-height: calc(100vw * 3 / 2);
   aspect-ratio: 2 / 3;
   background-color: #fefaf6;
-  overflow: visible;
-}
-
-/* 移除背景圖 */
-.bg-base {
-  display: none;
 }
 
 .wish-container {
@@ -33,13 +27,15 @@ body, html {
   left: 50%;
   transform: translateX(-50%);
   width: 80%;
-  height: 80%
   max-width: 520px;
+  height: 80%;
   background: rgba(255, 255, 255, 0.92);
   padding: 20px;
   border-radius: 16px;
   box-shadow: 0 0 10px rgba(0,0,0,0.05);
   z-index: 10;
+  display: flex;
+  flex-direction: column;
 }
 
 .wish-header {
@@ -73,14 +69,18 @@ body, html {
   background: #e89ca9;
 }
 
-#wish-list {
-  list-style: none;
-  padding: 0;
+.wish-list {
+  list-style: decimal;
+  padding-left: 1.5rem;
   margin: 0;
-  counter-reset: wish-counter;
+  flex-grow: 1;
+  overflow-y: auto;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 5px;
 }
 
-#wish-list li {
+.wish-list li {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -88,14 +88,7 @@ body, html {
   margin-bottom: 10px;
   padding: 10px 14px;
   border-radius: 10px;
-  counter-increment: wish-counter;
   font-size: 1rem;
-}
-
-#wish-list li::before {
-  content: counter(wish-counter) ". ";
-  margin-right: 8px;
-  color: #8a5d5d;
 }
 
 .wish-actions {
@@ -146,7 +139,7 @@ body, html {
   transform: scale(1.1);
 }
 
-/* 自訂確認彈窗 */
+/* 確認彈窗 */
 #confirm-modal.hidden {
   display: none;
 }
