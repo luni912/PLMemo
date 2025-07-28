@@ -145,3 +145,52 @@ body, html {
   color: #d14c6c;
   transform: scale(1.1);
 }
+
+/* 自訂確認彈窗 */
+#confirm-modal.hidden {
+  display: none;
+}
+#confirm-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+.modal-content {
+  position: relative;
+  background: #fff8f0;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+  text-align: center;
+  color: #5b4328;
+  font-family: 'Georgia', serif;
+}
+.modal-buttons {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-around;
+  gap: 0.5rem;
+}
+.modal-buttons button {
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+#cancel-delete {
+  background-color: #ccc;
+}
+#confirm-delete {
+  background-color: #d45c6d;
+  color: white;
+}

@@ -41,7 +41,7 @@ function createWishItem(id, text) {
   const input = document.createElement('input');
   input.type = 'text';
   input.value = text;
-  input.placeholder = '輸入願望內容';
+  input.placeholder = 'make a wish...';
   input.style.flex = '1';
   input.style.border = 'none';
   input.style.background = 'transparent';
@@ -66,8 +66,28 @@ function createWishItem(id, text) {
   deleteBtn.textContent = '-';
   deleteBtn.title = '刪除願望';
   deleteBtn.addEventListener('click', () => {
-    remove(ref(db, `wishList/${user}/${id}`));
+    showConfirmModal(() => {
+      remove(ref(db, `wishList/${user}/${id}`));
+    });
   });
+
+  function showConfirmModal(onConfirm) {
+    const modal = document.getElementById('confirm-modal');
+    const cancelBtn = document.getElementById('cancel-delete');
+    const confirmBtn = document.getElementById('confirm-delete');
+
+    modal.classList.remove('hidden');
+
+    const close = () => modal.classList.add('hidden');
+
+    cancelBtn.onclick = close;
+    confirmBtn.onclick = () => {
+      onConfirm();
+      close();
+    };
+  }
+
+
 
   actions.appendChild(editBtn);
   actions.appendChild(deleteBtn);
