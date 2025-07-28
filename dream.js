@@ -19,7 +19,8 @@ if (!user) window.location.href = 'login.html';
 const counters = {
   concert: document.getElementById('concert-count'),
   exhibit: document.getElementById('exhibit-count'),
-  music: document.getElementById('music-count')
+  music: document.getElementById('music-count'),
+  movie: document.getElementById('movie-count')
 };
 
 const modal = document.getElementById('confirm-modal');
@@ -30,7 +31,7 @@ let pendingDelete = null;
 const notesContainer = document.getElementById('notes-container');
 let openNotes = {};
 
-['concert', 'exhibit', 'music'].forEach(type => {
+['concert', 'exhibit', 'music', 'movie'].forEach(type => {
   const listRef = ref(db, `dream/${user}/${type}`);
 
   onValue(listRef, snapshot => {
@@ -48,6 +49,7 @@ function createNote(type) {
   const titles = {
     concert: '演唱會',
     exhibit: '展覽',
+    movie: '電影',
     music: '音樂會/交響樂/歌劇'
   };
 
