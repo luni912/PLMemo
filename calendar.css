@@ -77,7 +77,7 @@ html, body {
 .calendar-table td:nth-child(3),
 .calendar-table td:nth-child(4),
 .calendar-table td:nth-child(5) {
-  color: #cfab81; 
+  color: #c49e73; 
 }
 
 /* 週六（日六）與週日上色 */
