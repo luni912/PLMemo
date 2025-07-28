@@ -8,8 +8,8 @@
  
 </head>
 <body class="bg-[#fffaf4] flex justify-center items-center min-h-screen relative">
-
-  <div class="calendar-container relative">
+  <div class="page-wrapper">
+   <div class="calendar-container relative">
     <!-- 頁首切換 -->
     <div class="calendar-header">
       <button id="prev-month" class="calendar-btn" aria-label="上一個月">◄</button>
@@ -65,10 +65,10 @@
     </div>
 
     <!-- 底部工具列 -->
-    <div class="calendar-toolbar">
-      <button id="home-btn" title="回首頁">🏠 Home</button>
-      <button id="logout-btn" title="登出">🚪 Logout</button>
-    </div>
+     <div class="bottom-center-buttons">
+       <button id="home-btn">🏠 Home</button>
+       <button id="logout-btn">🚪 Logout</button>
+     </div>
   </div>
 
   <!-- Firebase & 月曆腳本 -->

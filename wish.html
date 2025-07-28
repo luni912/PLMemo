@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Make Our Wish Come True</title>
+  <link rel="stylesheet" href="wish.css" />
+</head>
+<body>
+
+  <div class="scene-wrapper">
+
+    <!-- 背景可重複利用 -->
+  
+    <div class="wish-container">
+      <div class="wish-header">
+        <h1>Wishes will be fulfilled</h1>
+        <button id="add-wish">＋</button>
+      </div>
+      <ul id="wish-list"></ul>
+    </div>
+    <div class="bottom-center-buttons">
+      <button id="home-btn">🏠 Home</button>
+      <button id="logout-btn">🚪 Logout</button>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js"></script>
+
+  <!-- 主程式 -->
+  <script type="module" src="wish.js"></script>
+</body>
+</html>

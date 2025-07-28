@@ -1,12 +1,21 @@
 /* 通用設定 */
 html, body {
   background-color: #000 !important;
-  color: white;
+  color: #444;
   margin: 0;
   padding: 0;
+  font-family: 'Noto Serif TC', 'Georgia', serif;
 }
 
 /* 主容器：會根據寬度自適應縮放 */
+.page-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+  box-sizing: border-box;
+}
 .calendar-container {
   position: relative;
   width: 100vw;
@@ -99,26 +108,35 @@ html, body {
 }
 
 /* 底部工具列（固定在底） */
-.calendar-toolbar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: rgba(255, 255, 255, 0.3);
+.bottom-center-buttons {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  justify-content: space-around;
-  padding: 0.5rem 0;
-  user-select: none;
-  border-top: 1px solid #ddd;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 6px 12px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  z-index: 999;
 }
 
-.calendar-toolbar button {
-  color: #c9b29c;
+.bottom-center-buttons button {
   background: none;
   border: none;
+  font-size: 12px;
   cursor: pointer;
-  font-size: 1rem;
+  color: #6d4b4b;
+  font-family: 'Noto Sans TC', sans-serif;
+  transition: color 0.3s ease, transform 0.2s ease;
 }
+
+.bottom-center-buttons button:hover {
+  color: #d14c6c;
+  transform: scale(1.1);
+}
+
 #month-year {
   font-family: 'Georgia', 'Times New Roman', serif; /* 優雅字體 */
   font-size: 1.25rem;

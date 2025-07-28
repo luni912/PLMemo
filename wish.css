@@ -1,0 +1,147 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  font-family: 'Georgia', 'Noto Serif TC', serif;
+  background-color: #000000;
+  color: #444;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.scene-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  max-width: calc(100vh * 2 / 3);
+  max-height: calc(100vw * 3 / 2);
+  aspect-ratio: 2 / 3;
+  background-color: #fefaf6;
+  overflow: visible;
+}
+
+/* 移除背景圖 */
+.bg-base {
+  display: none;
+}
+
+.wish-container {
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 80%
+  max-width: 520px;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  z-index: 10;
+}
+
+.wish-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.wish-header h1 {
+  font-family: 'Georgia', 'Noto Serif TC', serif;
+  font-size: 1.2rem;
+  text-align: center;
+  flex: 1;
+  color: #5e3f45;
+}
+
+.wish-header button {
+  font-size: 1rem;
+  background: #f5d0d0;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.wish-header button:hover {
+  background: #e89ca9;
+}
+
+#wish-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: wish-counter;
+}
+
+#wish-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff0f3;
+  margin-bottom: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  counter-increment: wish-counter;
+  font-size: 1rem;
+}
+
+#wish-list li::before {
+  content: counter(wish-counter) ". ";
+  margin-right: 8px;
+  color: #8a5d5d;
+}
+
+.wish-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.wish-actions button {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #7b4b4b;
+  transition: color 0.2s;
+}
+
+.wish-actions button:hover {
+  color: #b3395b;
+}
+
+/* 底部按鈕 */
+.bottom-center-buttons {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 6px 12px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  z-index: 50;
+}
+
+.bottom-center-buttons button {
+  background: none;
+  border: none;
+  font-size: 12px;
+  cursor: pointer;
+  color: #6d4b4b;
+  font-family: 'Noto Sans TC', sans-serif;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.bottom-center-buttons button:hover {
+  color: #d14c6c;
+  transform: scale(1.1);
+}

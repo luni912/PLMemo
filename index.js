@@ -101,9 +101,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('stone').addEventListener('click', () => window.location.href = 'dream.html');
   document.getElementById('cherry').addEventListener('click', () => window.location.href = 'chamber.html');
   document.getElementById('lamp').addEventListener('click', () => {
-    const noticeDiv = document.getElementById('notice');
-    if (noticeDiv) noticeDiv.classList.toggle('hidden');
+    window.location.href = 'wish.html';
   });
+
 
   document.getElementById('logout-btn').addEventListener('click', () => {
     sessionStorage.clear();
