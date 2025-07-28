@@ -272,7 +272,7 @@ h1 {
 
 /* 日期輸入框縮小字體、顏色變淺 */
 .dream-note-popup .dream-item input[type="date"] {
-  width: 90px;
+  width: 40%;
   font-size: 0.8rem;
   vertical-align: middle;
   border: none;
