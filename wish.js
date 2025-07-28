@@ -55,7 +55,7 @@ function createWishItem(id, text) {
   actions.classList.add('wish-actions');
 
   const editBtn = document.createElement('button');
-  editBtn.textContent = '+';
+  editBtn.textContent = 'v';
   editBtn.title = '儲存';
   editBtn.addEventListener('click', () => {
     set(ref(db, `wishList/${user}/${id}`), input.value);

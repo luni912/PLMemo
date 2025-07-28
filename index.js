@@ -18,6 +18,7 @@ const db = getDatabase(app);
 const originalWidth = 1024;
 const originalHeight = 1536;
 
+// 按鈕位置更新
 function updateButtonPositions() {
   const wrapper = document.getElementById('scene-wrapper');
   const bg = document.getElementById('bg-base');
@@ -42,6 +43,7 @@ function updateButtonPositions() {
   });
 }
 
+// 倒數事件載入
 function loadCountdown() {
   const milestones = [
     { name: 'First chat', date: '2025-03-26' },
@@ -62,22 +64,25 @@ function loadCountdown() {
     } else if (diffDays === 0) {
       countdownDiv.innerHTML += `<p>${milestone.name} ~ 就是今天！🎉</p>`;
     } else {
-      countdownDiv.innerHTML += `<p>${milestone.name} ~  ${Math.abs(diffDays)} days</p>`;
+      countdownDiv.innerHTML += `<p>${milestone.name} ~ ${Math.abs(diffDays)} days</p>`;
     }
   });
 }
 
+// 載入通知
 function loadNotices(user) {
   const noticesRef = ref(db, 'notices');
   onValue(noticesRef, (snapshot) => {
     const notices = snapshot.val();
     const noticeDiv = document.getElementById('notice');
     if (!noticeDiv) return;
+
     if (notices) {
       const userNotices = Object.values(notices).filter(n => n.for === user);
       noticeDiv.innerHTML = userNotices.length
         ? userNotices.map(n => `<p>${n.content} (${n.timestamp})</p>`).join('')
         : '<p>無最新事件</p>';
+
       if (userNotices.length) {
         document.getElementById('lamp-indicator')?.classList.remove('hidden');
       }
@@ -85,29 +90,39 @@ function loadNotices(user) {
   });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const user = sessionStorage.getItem('user');
-  if (!user) {
-    window.location.href = 'login.html';
-    return;
-  }
+// 初始化主邏輯（確保圖片載入後才執行）
+function startApp(user) {
   loadCountdown();
   loadNotices(user);
   updateButtonPositions();
-
 
   // 綁定按鈕事件
   document.getElementById('moon').addEventListener('click', () => window.location.href = 'calendar.html');
   document.getElementById('stone').addEventListener('click', () => window.location.href = 'dream.html');
   document.getElementById('cherry').addEventListener('click', () => window.location.href = 'chamber.html');
-  document.getElementById('lamp').addEventListener('click', () => {
-    window.location.href = 'wish.html';
-  });
-
+  document.getElementById('lamp').addEventListener('click', () => window.location.href = 'wish.html');
 
   document.getElementById('logout-btn').addEventListener('click', () => {
     sessionStorage.clear();
     window.location.href = 'login.html';
   });
 
+  // 視窗大小變化時重新定位
+  window.addEventListener('resize', updateButtonPositions);
+}
+
+// 等 DOM 完成 & 背景圖載入完畢後才執行
+document.addEventListener('DOMContentLoaded', () => {
+  const user = sessionStorage.getItem('user');
+  if (!user) {
+    window.location.href = 'login.html';
+    return;
+  }
+
+  const bg = document.getElementById('bg-base');
+  if (bg.complete) {
+    startApp(user);
+  } else {
+    bg.onload = () => startApp(user);
+  }
 });
