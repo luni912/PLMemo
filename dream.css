@@ -257,27 +257,24 @@ h1 {
 
 /* 事件改用多行 textarea，自動換行 */
 .dream-note-popup .dream-item textarea {
-  flex: 1;
-  min-width: 38%;
-  min-height: 20px;
-  max-height: 45px;
-  resize: vertical;
+  min-width: 35%;
+  vertical-align: middle;
   border: none;
   background: transparent;
-  border-bottom: 1px solid #aaccdd;
-  padding: 1px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #003366;
   outline: none;
-  line-height: 1;
+  line-height: 1.2;
   font-family: inherit;
   overflow-wrap: break-word;
+  margin-top: 2px;
 }
 
 /* 日期輸入框縮小字體、顏色變淺 */
 .dream-note-popup .dream-item input[type="date"] {
   width: 90px;
   font-size: 0.8rem;
+  vertical-align: middle;
   border: none;
   background: transparent;
   border-bottom: 1px solid #aaccdd;
