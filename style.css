@@ -88,6 +88,7 @@ body, html {
   background: none;
   border: none;
   font-size: 13px;
+  font-color: #000000;
   cursor: pointer;
   transition: color 0.3s ease, transform 0.2s ease;
 }
