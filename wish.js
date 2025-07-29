@@ -10,6 +10,12 @@ const firebaseConfig = {
   messagingSenderId: "956448773615",
   appId: "1:956448773615:web:f3526d3005efc596a6921a"
 };
+function setVH() {
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+setVH();
+window.addEventListener('resize', setVH);
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
