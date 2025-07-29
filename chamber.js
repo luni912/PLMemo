@@ -13,12 +13,12 @@ let board = [];
 let revealedCount = 0;
 let gameOver = false;
 
-function setVH() {
-  let vh = window.innerHeight * 0.01;
+function setRealVH() {
+  const vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty('--vh', `${vh}px`);
 }
-setVH();
-window.addEventListener('resize', setVH);
+setRealVH();
+window.addEventListener('resize', setRealVH);
 
 
 function initBoard() {

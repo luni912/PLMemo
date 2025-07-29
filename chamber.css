@@ -22,7 +22,7 @@ html, body {
 .scene-wrapper {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   max-width: calc(100vh * 2 / 3);
   max-height: calc(100vw * 3 / 2);
   aspect-ratio: 2 / 3;
@@ -56,6 +56,7 @@ h1 {
 #minesweeper {
   width: 100%;
   max-width: 400px;
+  max-height: calc(100% - 120px); /* 扣掉 padding 和 bottom-bar */
   aspect-ratio: 1 / 1;   /* 正方形容器 */
   background-color: #fff0f6;
   padding: 8px;
