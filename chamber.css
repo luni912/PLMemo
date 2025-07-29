@@ -13,6 +13,12 @@ body, html {
 }
 
 /* 固定比例容器 2:3 */
+html, body {
+  height: calc(var(--vh, 1vh) * 100);
+}
+.scene-wrapper {
+  height: calc(var(--vh, 1vh) * 100);
+}
 .scene-wrapper {
   position: relative;
   width: 100vw;
