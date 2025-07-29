@@ -35,6 +35,10 @@ body, html {
   padding-top: env(safe-area-inset-top);
   padding-bottom: env(safe-area-inset-bottom);
 }
+.scene-wrapper {
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
+}
+
 html, body {
   height: calc(var(--vh, 1vh) * 100);
 }

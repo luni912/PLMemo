@@ -28,6 +28,8 @@ body, html {
   justify-content: center;
   align-items: center;
   padding: 15px;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* 標題 */
