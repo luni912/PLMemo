@@ -35,25 +35,21 @@ body, html {
   padding-top: env(safe-area-inset-top);
   padding-bottom: env(safe-area-inset-bottom);
 }
-.scene-wrapper {
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
-}
 
 html, body {
   height: calc(var(--vh, 1vh) * 100);
 }
-.scene-wrapper {
-  height: calc(var(--vh, 1vh) * 100);
-}
+
 .scene-wrapper {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   max-width: calc(100vh * 2 / 3);
   max-height: calc(100vw * 3 / 2);
   aspect-ratio: 2 / 3;
   background: black;
   overflow: visible;
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
 }
 
 /* 背景圖 */
