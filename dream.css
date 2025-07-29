@@ -2,7 +2,6 @@ body {
   margin: 0;
   padding: 0;
   height: calc(var(--vh, 1vh) * 100);
-
   font-family: 'Helvetica Neue', sans-serif;
   background-color: #000000;
   color: #003366;
@@ -11,6 +10,7 @@ body {
   align-items: center;
   min-height: 100vh;
   overflow: hidden;
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
 }
 html, body {
   height: calc(var(--vh, 1vh) * 100);
