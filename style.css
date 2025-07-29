@@ -32,6 +32,10 @@ body, html {
 }
 /* 容器固定比例 1024:1536 (2:3) */
 .scene-wrapper {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.scene-wrapper {
   position: relative;
   width: 100vw;
   height: 100vh;
@@ -66,7 +70,8 @@ body, html {
 
 /* 下方導覽列 */
 .bottom-bar {
-  position: fixed;
+  position: absolute;
+  
   bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
