@@ -19,6 +19,9 @@ body, html {
   max-height: calc(100vw * 3 / 2);
   aspect-ratio: 2 / 3;
   background-color: #fefaf6;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
 }
 
 .wish-container {
