@@ -64,6 +64,7 @@ html, body {
 
 .wish-header button {
   font-size: 1rem;
+  line-height: 1;
   background: #f5d0d0;
   border: none;
   border-radius: 50%;
