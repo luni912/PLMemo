@@ -63,8 +63,8 @@ h1 {
   border-radius: 12px;
   box-shadow: 0 0 8px #ff69b4aa inset;
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: repeat(10, 1fr);
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
   gap: 4px;
   box-sizing: border-box;
   user-select: none;

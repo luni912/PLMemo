@@ -1,5 +1,5 @@
-const rows = 10;
-const cols = 10;
+const rows = 8;
+const cols = 8;
 const minesCount = 10;
 const minesweeper = document.getElementById('minesweeper');
 const homeBtn = document.getElementById('home-btn');
